@@ -12,7 +12,7 @@ import jade.lang.acl.ACLMessage;
 public class TrainAgent extends Agent {
 
     protected void setup() {
-
+        //teste
         System.out.println("Hello, I'm an Train agent!");
         System.out.println("My local name is " + getAID().getLocalName());
         System.out.println("My GUID is " + getAID().getName());
