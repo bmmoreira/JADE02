@@ -2,12 +2,14 @@ package metro;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
+import metro.behaviors.station.BroadcastTrainArrival;
 
 public class TrainAgent extends Agent {
 
@@ -33,6 +35,17 @@ public class TrainAgent extends Agent {
                 }
             }
         });
+
+        // TODO: melhorar isto. Aguardar que os agentes existam em vez de usar Thread.sleep
+        // Deveria estar no "StationAgent"?
+        try {
+            Thread.sleep(5000);
+            SequentialBehaviour seq = new SequentialBehaviour();
+            seq.addSubBehaviour(new BroadcastTrainArrival());
+            addBehaviour(seq);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void plataformStatus(final ServiceDescription sd, final int plataformID){
