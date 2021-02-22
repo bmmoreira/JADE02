@@ -1,5 +1,9 @@
 package metro.gui;
 
+import jade.core.*;
+import jade.core.Runtime;
+import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
 import metro.CentralControlAgent;
 
 import javax.imageio.ImageIO;
@@ -11,9 +15,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class TASS extends JFrame implements ActionListener {
     private JPanel mainPanel = new JPanel();
@@ -67,8 +69,9 @@ public class TASS extends JFrame implements ActionListener {
         JButton src = (JButton) actionEvent.getSource();
         if(src.getActionCommand().equals("Start")){
             System.out.println("Start pressed");
-            imgPanel.ellipse.setFrame(315, 225, 50, 50);
+            //imgPanel.ellipse.setFrame(315, 192, 50, 50);
             imgPanel.repaint();
+            myAgent.createAgent("t1", "metro.TrainAgent", new String[]{"1"});
         } else if(src.getActionCommand().equals("Stop")){
             System.out.println("Stop pressed");
         }
@@ -78,6 +81,8 @@ public class TASS extends JFrame implements ActionListener {
         imgPanel.trainVisible = true;
         imgPanel.repaint();
     }
+
+
 
     class ImagePanel extends JPanel {
 
@@ -94,15 +99,15 @@ public class TASS extends JFrame implements ActionListener {
 
         public ImagePanel() {
             setLayout(new GridBagLayout());
-            ellipse = new Ellipse2D.Float(45, 225, 50, 50);
-            ellipse2 = new Ellipse2D.Float(145, 225, 50, 50);
+            ellipse = new Ellipse2D.Float(86, 195, 50, 50);
+            ellipse2 = new Ellipse2D.Float(102, 347, 20, 20);
             //add(new JButton("Test Button"));
 
             //img = new ImageIcon("images/tass2.png");
 
             try {
-                img = ImageIO.read(new File("images/tass3.png")) ;
-                trainIcon = ImageIO.read(new File("images/train.png")) ;
+                img = ImageIO.read(new File("images/tass6.png")) ;
+                trainIcon = ImageIO.read(new File("images/train2.png")) ;
             }
             catch (IOException ex) {
                 System.err.println("Caught IOException: " + ex.getMessage());
@@ -129,7 +134,7 @@ public class TASS extends JFrame implements ActionListener {
             //g.fillOval(45, 225, 50, 50);
             doDrawing(g);
             if(trainVisible){
-                createTrainCircle(g);
+                createTrainImage(g);
 
             }
 
@@ -139,15 +144,19 @@ public class TASS extends JFrame implements ActionListener {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setColor(Color.GREEN);
             g2d.fill(ellipse);
+            //g2d.fill(ellipse2);
             g2d.dispose();
         }
 
-        public void createTrainCircle(Graphics g){
+        public void createTrainImage(Graphics g){
             // g.setColor(Color.GREEN);
             //g.fillRect(150, 150, 75 ,75);
-            g.drawImage(trainIcon, 30, 290, 81, 83, this);
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(Color.GREEN);
+            g2d.fill(ellipse2);
+            g.drawImage(trainIcon, 25, 290, 75, 75, this);
             g.dispose();
-
+            g2d.dispose();
 
         }
 
