@@ -1,58 +1,94 @@
 package metro;
 
+import java.lang.management.PlatformLoggingMXBean;
+import java.util.ArrayList;
+
 public class Station {
 
-    public Station(String stationName) {
-        this.stationName = stationName;
-    }
 
     private String stationName;
-    // Status da plataforma pode ser 1(ocupada) 2(Livre) 0 (Desabitada)
-    private int plataformOneStatus;
-    private int plataformTwoStatus;
-    private int plataformOneCurrentPassengers;
-    private int plataformTwoCurrentPassengers;
+    private int stationNumber;
+    public ArrayList<Plataform> plataforms;
 
-    public int getPlataformOneCurrentPassengers() {
-        return plataformOneCurrentPassengers;
+
+    public Station(int sNum, int pNum) {
+
+        this.plataforms = new ArrayList<Plataform>();
+
+        this.stationNumber = sNum;
+        for(int i = 0;i < pNum; i++){
+            plataforms.add(new Plataform(i));
+        }
+
     }
 
-    public void setPlataformOneCurrentPassengers(int plataformOneCurrentPassengers) {
-        this.plataformOneCurrentPassengers = plataformOneCurrentPassengers;
+    public String getTrainID(int plataformNumber){
+        return plataforms.get(plataformNumber).getTrainID();
     }
 
-    public int getPlataformTwoCurrentPassengers() {
-        return plataformTwoCurrentPassengers;
-    }
-
-    public void setPlataformTwoCurrentPassengers(int plataformTwoCurrentPassengers) {
-        this.plataformTwoCurrentPassengers = plataformTwoCurrentPassengers;
+    public void setTrainID(String trainID, int plataformNumber){
+        plataforms.get(plataformNumber).setTrainID(trainID);
     }
 
     public String getStationName() {
         return stationName;
     }
 
+
     public void setStationName(String stationName) {
         this.stationName = stationName;
     }
 
-    public int getPlataformOneStatus() {
-        return plataformOneStatus;
+    // retorna o index da primeira plataforma livre
+    public int getFreePlataform(){
+
+        for(int i = 0;i < plataforms.size();i++){
+            if(this.plataforms.get(i).getPlataformStatus() == 0)
+                return i+1;
+        }
+        return 0;
+        // retorna 0 se nao a plataformas livres
+    }
+    // 0 = Livre, 1 = ocupada, 2 = desabilitada
+    public void setPlataformStatus(int index, int num){
+        this.plataforms.get(index).setPlataformStatus(num);
     }
 
-    public void setPlataformOneStatus(int plataformOneStatus) {
-        this.plataformOneStatus = plataformOneStatus;
-    }
+    private class Plataform{
 
-    public int getPlataformTwoStatus() {
-        return plataformTwoStatus;
-    }
+        private int plataformID;
+        private String trainID;
 
-    public void setPlataformTwoStatus(int plataformTwoStatus) {
-        this.plataformTwoStatus = plataformTwoStatus;
-    }
+        Plataform(int num){
+            this.plataformID = num;
+        }
 
+        public String getTrainID() {
+            return trainID;
+        }
+
+        public void setTrainID(String trainID) {
+            this.trainID = trainID;
+        }
+
+        public int getPlataformStatus() {
+            return plataformStatus;
+        }
+
+        public void setPlataformStatus(int plataformStatus) {
+            this.plataformStatus = plataformStatus;
+        }
+
+        private int plataformStatus = 0;
+
+        public int getPlataformID() {
+            return plataformID;
+        }
+
+        public void setPlataformID(int plataformID) {
+            this.plataformID = plataformID;
+        }
+    }
 
 
 

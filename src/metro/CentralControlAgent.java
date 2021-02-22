@@ -19,17 +19,22 @@ public class CentralControlAgent extends Agent{
 
     protected void setup() {
 
-        System.out.println("Train Agent " + this.getAID().getName() + " is ready.");
+        System.out.println("Central Control Agent " + this.getAID().getName() + " is ready.");
         this.myGui = new TASS("Central Train Station Control System",this);
         this.myGui.showGui();
+
 
 
         addBehaviour(new CyclicBehaviour(this) {
             @Override
             public void action() {
                 ACLMessage msg = receive();
+
                 if(msg != null){
-                    System.out.println(msg.getSender() +" : aa" + msg.getContent());
+                    if(msg.getContent().equals("showTrain")){
+                        //System.out.println(msg.getSender() +" : content: " + msg.getContent());
+                        myGui.paintrain();
+                    }
                 } else {
                     block();
                 }

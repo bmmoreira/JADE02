@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -73,12 +74,19 @@ public class TASS extends JFrame implements ActionListener {
         }
     }
 
+    public void paintrain(){
+        imgPanel.trainVisible = true;
+        imgPanel.repaint();
+    }
+
     class ImagePanel extends JPanel {
 
         final private int teste =1;
-
-        Image img;
+        public boolean trainVisible = false;
+        BufferedImage img;
+        BufferedImage trainIcon;
         final public Ellipse2D ellipse;
+        final public Ellipse2D ellipse2;
 
         final public Ellipse2D getEllipse(){
             return ellipse;
@@ -87,12 +95,14 @@ public class TASS extends JFrame implements ActionListener {
         public ImagePanel() {
             setLayout(new GridBagLayout());
             ellipse = new Ellipse2D.Float(45, 225, 50, 50);
+            ellipse2 = new Ellipse2D.Float(145, 225, 50, 50);
             //add(new JButton("Test Button"));
 
             //img = new ImageIcon("images/tass2.png");
 
             try {
-                img = ImageIO.read(new File("images/tass2.png")) ;
+                img = ImageIO.read(new File("images/tass3.png")) ;
+                trainIcon = ImageIO.read(new File("images/train.png")) ;
             }
             catch (IOException ex) {
                 System.err.println("Caught IOException: " + ex.getMessage());
@@ -114,9 +124,14 @@ public class TASS extends JFrame implements ActionListener {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(img, 0, 0, 685, 412, this);
+
             //g.setColor(Color.RED);
             //g.fillOval(45, 225, 50, 50);
             doDrawing(g);
+            if(trainVisible){
+                createTrainCircle(g);
+
+            }
 
         }
 
@@ -125,6 +140,15 @@ public class TASS extends JFrame implements ActionListener {
             g2d.setColor(Color.GREEN);
             g2d.fill(ellipse);
             g2d.dispose();
+        }
+
+        public void createTrainCircle(Graphics g){
+            // g.setColor(Color.GREEN);
+            //g.fillRect(150, 150, 75 ,75);
+            g.drawImage(trainIcon, 30, 290, 81, 83, this);
+            g.dispose();
+
+
         }
 
 
