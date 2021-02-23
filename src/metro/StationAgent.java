@@ -1,6 +1,5 @@
 package metro;
 
-import examples.bookTrading.BookSellerAgent;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
