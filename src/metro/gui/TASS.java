@@ -23,6 +23,7 @@ public class TASS extends JFrame implements ActionListener {
     private CentralControlAgent myAgent;
     private JButton startBtn;
     private JButton stopBtn;
+    private String trainID;
 
 
 
@@ -77,7 +78,8 @@ public class TASS extends JFrame implements ActionListener {
         }
     }
 
-    public void paintrain(){
+    public void paintrain(String trainID){
+        this.trainID = trainID;
         imgPanel.trainVisible = true;
         imgPanel.repaint();
     }
@@ -155,6 +157,11 @@ public class TASS extends JFrame implements ActionListener {
             g2d.setColor(Color.GREEN);
             g2d.fill(ellipse2);
             g.drawImage(trainIcon, 25, 290, 75, 75, this);
+            g.setFont(new Font(
+                    "SansSerif",
+                    Font.BOLD,
+                    12));
+            g.drawString(TASS.this.trainID,25,390);
             g.dispose();
             g2d.dispose();
 

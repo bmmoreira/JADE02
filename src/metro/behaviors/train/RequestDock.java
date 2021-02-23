@@ -1,6 +1,6 @@
 package metro.behaviors.train;
 
-import examples.bookTrading.BookBuyerAgent;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -87,7 +87,7 @@ public class RequestDock extends Behaviour {
                     if (reply.getPerformative() == ACLMessage.INFORM) {
                         // docking successfully
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                                "Successfully docked with agent" + reply.getSender().getName());
+                                "Successfully docked with agent " + reply.getSender().getName());
 
                     } else {
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +

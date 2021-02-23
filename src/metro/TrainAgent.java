@@ -33,34 +33,23 @@ public class TrainAgent extends Agent {
             stations = Integer.valueOf((String)args[0]) ;
         }
 
+        /*
+         *  Aporta na primeira estacao e faz troca complexa
+         *  de mensagens entre Agente de Comboio e Agente de Estacao
+         */
+        addBehaviour(new metro.behaviors.train.InitDock(this));
 
         /*
          *   Envia mensagem para Controle Central informando Agent ready
          *  Controle Central mostra comboio na estacao na GUI
          */
-        addBehaviour(new metro.behaviors.train.InformCentralAgent()) ;
-        /*
-         *  Aporta na primeira estacao e faz troca complexa
-         *  de mensagens entre Agente de Comboio e Agente de Estacao
-         */
-        addBehaviour(new metro.behaviors.train.InitDock(this)) ;
+        addBehaviour(new metro.behaviors.train.InformCentralAgent("trainDock"));
 
 
-        /*
-        addBehaviour(new CyclicBehaviour(this) {
-            @Override
-            public void action() {
-                ACLMessage msg = receive();
-                if(msg != null){
-                    System.out.println(msg.getSender() +" : aa " + msg.getContent());
-                } else {
-                    block();
-                }
-            }
-        });
 
         // TODO: melhorar isto. Aguardar que os agentes existam em vez de usar Thread.sleep
         // Deveria estar no "StationAgent"?
+        /*
         try {
             Thread.sleep(5000);
             SequentialBehaviour seq = new SequentialBehaviour();
@@ -72,12 +61,6 @@ public class TrainAgent extends Agent {
         */
 
     }
-
-
-
-
-
-
 
 
 }

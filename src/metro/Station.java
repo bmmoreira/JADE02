@@ -1,5 +1,7 @@
 package metro;
 
+import jade.core.AID;
+
 import java.lang.management.PlatformLoggingMXBean;
 import java.util.ArrayList;
 
@@ -22,11 +24,11 @@ public class Station {
 
     }
 
-    public String getTrainID(int plataformNumber){
+    public AID getTrainID(int plataformNumber){
         return plataforms.get(plataformNumber).getTrainID();
     }
 
-    public void setTrainID(String trainID, int plataformNumber){
+    public void setTrainID(AID trainID, int plataformNumber){
         plataforms.get(plataformNumber).setTrainID(trainID);
     }
 
@@ -57,17 +59,17 @@ public class Station {
     private class Plataform{
 
         private int plataformID;
-        private String trainID;
+        private AID trainID;
 
         Plataform(int num){
             this.plataformID = num;
         }
 
-        public String getTrainID() {
+        public AID getTrainID() {
             return trainID;
         }
 
-        public void setTrainID(String trainID) {
+        public void setTrainID(AID trainID) {
             this.trainID = trainID;
         }
 

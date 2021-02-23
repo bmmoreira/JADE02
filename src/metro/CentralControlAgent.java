@@ -6,6 +6,7 @@ import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
@@ -20,7 +21,7 @@ import metro.extras.Ansi;
 
 public class CentralControlAgent extends Agent{
 
-    private TASS myGui;
+    public TASS myGui;
     private AgentController t1 = null;
 
     protected void setup() {
@@ -32,22 +33,12 @@ public class CentralControlAgent extends Agent{
         this.createAgent("st1", "metro.StationAgent", new String[]{"1"});
 
 
+        /*
+         *   Recebe mensagens de TrainAgents
+         *   MatchPerformative(ACLMessage.INFORM)
+         */
+        addBehaviour(new metro.behaviors.central.ReceiveReport(myGui));
 
-        addBehaviour(new CyclicBehaviour(this) {
-            @Override
-            public void action() {
-                ACLMessage msg = receive();
-
-                if(msg != null){
-                    if(msg.getContent().equals("showTrain")){
-                        System.out.println(msg.getSender() +" : content: " + msg.getContent());
-                        myGui.paintrain();
-                    }
-                } else {
-                    block();
-                }
-            }
-        });
     }
     public void createAgent(String name,String className,Object[]args){
 
