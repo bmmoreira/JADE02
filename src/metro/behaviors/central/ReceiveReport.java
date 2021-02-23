@@ -16,8 +16,8 @@ public class ReceiveReport extends CyclicBehaviour {
     }
     @Override
     public void action() {
-        //MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
-        ACLMessage msg = this.myAgent.receive();
+        MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+        ACLMessage msg = this.myAgent.receive(mt);
         //ACLMessage msg = receive(mt);
 
         if(msg != null){
