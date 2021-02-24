@@ -29,7 +29,7 @@ public class DockServer extends CyclicBehaviour {
 
             // Alocar comboio para plataforma livre
             int plataformNumber = ag.plataformStatus;
-            //station.setTrainID(msg.getSender().getName(),plataformNumber);
+            ag.station.setTrainID(msg.getSender(),plataformNumber);
             // Passo 6 informar alocacao de plataforma
             reply.setPerformative(ACLMessage.INFORM);
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +

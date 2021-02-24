@@ -11,6 +11,26 @@ public class Station {
     private String stationName;
     private int stationNumber;
     public ArrayList<Plataform> plataforms;
+    // in case both trains are at both plataforms Station is full
+    private boolean stationFull;
+    // train interval in minutes
+    private int trainFrequency;
+
+    public int getTrainFrequency() {
+        return trainFrequency;
+    }
+
+    public void setTrainFrequency(int trainFrequency) {
+        this.trainFrequency = trainFrequency;
+    }
+
+    public boolean isStationFull() {
+        return stationFull;
+    }
+
+    public void setStationFull(boolean stationFull) {
+        this.stationFull = stationFull;
+    }
 
 
     public Station(int sNum, int pNum) {
@@ -46,10 +66,10 @@ public class Station {
 
         for(int i = 0;i < plataforms.size();i++){
             if(this.plataforms.get(i).getPlataformStatus() == 0)
-                return i+1;
+                return i;
         }
-        return 0;
-        // retorna 0 se nao a plataformas livres
+        return 2;
+        // retorna 2 se nao plataformas livres
     }
     // 0 = Livre, 1 = ocupada, 2 = desabilitada
     public void setPlataformStatus(int index, int num){

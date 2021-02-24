@@ -2,8 +2,9 @@ package metro.behaviors.train;
 
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 
-public class TrainCapacity extends Behaviour {
+public class TrainCapacity extends CyclicBehaviour {
 
     long delay;
 
@@ -16,13 +17,7 @@ public class TrainCapacity extends Behaviour {
 
     }
 
-    public boolean done(){
-        return false;
-    }
 
-    public int onEnd(){
-        return 0;
-    }
 
 
 }
