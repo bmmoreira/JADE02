@@ -6,6 +6,16 @@ import java.util.ArrayList;
 
 public class Station {
 
+    public Station(int sNum, int pNum) {
+
+        this.plataforms = new ArrayList<Plataform>();
+
+        this.stationNumber = sNum;
+        for(int i = 0;i < pNum; i++){
+            plataforms.add(new Plataform(i));
+        }
+
+    }
 
     private String stationName;
     private int stationNumber;
@@ -49,17 +59,6 @@ public class Station {
         this.stationFull = stationFull;
     }
 
-
-    public Station(int sNum, int pNum) {
-
-        this.plataforms = new ArrayList<Plataform>();
-
-        this.stationNumber = sNum;
-        for(int i = 0;i < pNum; i++){
-            plataforms.add(new Plataform(i));
-        }
-
-    }
 
     public AID getTrainID(int plataformNumber){
         return plataforms.get(plataformNumber).getDockedtrainID();

@@ -28,15 +28,15 @@ public class OfferDocking extends CyclicBehaviour {
 
             ACLMessage reply = msg.createReply();
 
-            ag.plataformStatus = ag.station.getFreePlataform();
+            ag.freePlataform = ag.station.getFreePlataform();
 
-            if (ag.plataformStatus != 0) {
+            if (ag.freePlataform != 0) {
                 String trainID = msg.getContent();
                 System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                        "Offering docking to train: " + trainID + " on plataform " + ag.plataformStatus);
+                        "Offering docking to train: " + trainID + " on plataform " + ag.freePlataform);
                 reply.setPerformative(ACLMessage.PROPOSE);
                 // envie mensagem de resposta com status da plataforma
-                reply.setContent(String.valueOf(ag.plataformStatus));
+                reply.setContent(String.valueOf(ag.freePlataform));
             } else {
                 reply.setPerformative(ACLMessage.REFUSE);
                 System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
@@ -45,7 +45,7 @@ public class OfferDocking extends CyclicBehaviour {
             }
             this.myAgent.send(reply);
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                    "enviando mensagem ACLMessage.Propose " + ag.plataformStatus);
+                    "enviando mensagem ACLMessage.Propose " + ag.freePlataform);
         } else {
             this.block();
         }

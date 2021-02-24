@@ -15,10 +15,10 @@ import java.util.Hashtable;
 
 public class StationAgent extends Agent {
 
-    private int stationNumber;
+
     private AID[] trainAgents;
     public Station station;
-    public int plataformStatus;
+    public int freePlataform; // which plataform is free - 2 is full
 
     // Put agent initializations here
     protected void setup() {
@@ -31,9 +31,9 @@ public class StationAgent extends Agent {
                     "Station number: " + (String) args[0] + " initialized.");
             if (args != null && args.length > 0) {
 
-                this.stationNumber = Integer.valueOf((String) args[0]);
+                int sNumber = Integer.valueOf((String) args[0]);
                 //cria uma station com duas plataformas para teste
-                station = new Station(stationNumber, 2);
+                station = new Station(sNumber, 2);
                 // para teste vamos colocar a plataforma 1 livre(0)
                 station.setPlataformStatus(0, 1);
             }

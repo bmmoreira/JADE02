@@ -16,7 +16,6 @@ import metro.extras.Ansi;
 public class RequestDock extends Behaviour {
 
     private AID gateAgent;
-    private int repliesCnt;
     private TrainAgent ag;
 
     private int step, currentStation;
