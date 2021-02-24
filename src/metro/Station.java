@@ -2,7 +2,6 @@ package metro;
 
 import jade.core.AID;
 
-import java.lang.management.PlatformLoggingMXBean;
 import java.util.ArrayList;
 
 public class Station {
@@ -13,8 +12,26 @@ public class Station {
     public ArrayList<Plataform> plataforms;
     // in case both trains are at both plataforms Station is full
     private boolean stationFull;
-    // train interval in minutes
-    private int trainFrequency;
+    private int trainFrequency; // train interval in minutes
+    private int trainDefaultDockTime; // Default stop time for boarding passengers
+
+    public int getTrainDefaultDockTime() {
+        return trainDefaultDockTime;
+    }
+
+    public void setTrainDefaultDockTime(int trainDefaultDockTime) {
+        this.trainDefaultDockTime = trainDefaultDockTime;
+    }
+
+    public int getTrainDockTime() {
+        return trainDockTime;
+    }
+
+    public void setTrainDockTime(int trainDockTime) {
+        this.trainDockTime = trainDockTime;
+    }
+
+    private int trainDockTime; // current stop time for boarding passengers
 
     public int getTrainFrequency() {
         return trainFrequency;
@@ -45,11 +62,11 @@ public class Station {
     }
 
     public AID getTrainID(int plataformNumber){
-        return plataforms.get(plataformNumber).getTrainID();
+        return plataforms.get(plataformNumber).getDockedtrainID();
     }
 
     public void setTrainID(AID trainID, int plataformNumber){
-        plataforms.get(plataformNumber).setTrainID(trainID);
+        plataforms.get(plataformNumber).setDockedtrainID(trainID);
     }
 
     public String getStationName() {
@@ -79,18 +96,19 @@ public class Station {
     private class Plataform{
 
         private int plataformID;
-        private AID trainID;
+        private AID dockedtrainID;
+        private int plataformStatus = 0;
 
         Plataform(int num){
             this.plataformID = num;
         }
 
-        public AID getTrainID() {
-            return trainID;
+        public AID getDockedtrainID() {
+            return dockedtrainID;
         }
 
-        public void setTrainID(AID trainID) {
-            this.trainID = trainID;
+        public void setDockedtrainID(AID dockedtrainID) {
+            this.dockedtrainID = dockedtrainID;
         }
 
         public int getPlataformStatus() {
@@ -101,7 +119,6 @@ public class Station {
             this.plataformStatus = plataformStatus;
         }
 
-        private int plataformStatus = 0;
 
         public int getPlataformID() {
             return plataformID;

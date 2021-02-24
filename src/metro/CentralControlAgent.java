@@ -31,7 +31,7 @@ public class CentralControlAgent extends Agent{
         this.myGui.showGui();
         // Cria estacao padrao
         this.createAgent("st1", "metro.StationAgent", new String[]{"1"});
-
+        this.createAgent("st2", "metro.StationAgent", new String[]{"2"});
 
         /*
          *   Recebe mensagens de TrainAgents

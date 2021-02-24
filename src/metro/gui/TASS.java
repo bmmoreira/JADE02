@@ -108,7 +108,7 @@ public class TASS extends JFrame implements ActionListener {
             //img = new ImageIcon("images/tass2.png");
 
             try {
-                img = ImageIO.read(new File("images/tass6.png")) ;
+                img = ImageIO.read(new File("images/tass7.png")) ;
                 trainIcon = ImageIO.read(new File("images/train2.png")) ;
             }
             catch (IOException ex) {

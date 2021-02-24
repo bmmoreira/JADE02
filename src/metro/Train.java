@@ -4,12 +4,11 @@ import jade.core.AID;
 
 public class Train {
 
-
-    private int trainCapacity;
     private AID trainID;
-
-    // atual carregamento de passegeiros
-    private int trainPassengerLoad;
+    private boolean trainDocked; // if its on a plataform is docked
+    private int trainCapacity;
+    private int trainPassengerLoad; // actual passenger load
+    private int trainTrackSector; // which sector currently is the Train in the railtrack
 
     public AID getTrainID() {
         return trainID;
