@@ -12,6 +12,7 @@ import metro.extras.Ansi;
 public class InitDock extends OneShotBehaviour {
 
     private TrainAgent ag;
+    private String myName;
 
     public InitDock(TrainAgent agent) {
         this.ag = agent;
@@ -20,8 +21,10 @@ public class InitDock extends OneShotBehaviour {
 
     @Override
     public void action() {
-        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ this.myAgent.getAID().getName()) +
-                ": trying dock operation at station " + ag.currentStation);
+        this.myName= myAgent.getAID().getName();
+        String className = getClass().getName();
+
+
         DFAgentDescription template = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Station-service");
@@ -29,20 +32,27 @@ public class InitDock extends OneShotBehaviour {
 
         try {
             DFAgentDescription[] result = DFService.search(this.myAgent, template);
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ this.myAgent.getAID().getName()) +
-                    ": searching in Directory Facilitator Service");
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ this.myAgent.getAID().getName()) +
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
+                    ": Searching in Directory Facilitator Service"+
+                    new Ansi(Ansi.BACKGROUND_YELLOW, Ansi.BLACK).format("Train Agent "+ className));
+
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
                     ": Found the following station agents:");
             ag.stationAgents = new AID[result.length];
-
+            int stationCount = 0;
             for(int i = 0; i < result.length; ++i) {
                 ag.stationAgents[i] = result[i].getName();
                 System.out.println(ag.stationAgents[i].getName());
+                stationCount++;
             }
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
+                    ": Number of enabled stations: " + stationCount);
         } catch (FIPAException var5) {
             var5.printStackTrace();
         }
 
-        this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent));
+        //for(int i = 0; i<ag.stationAgents.length;i++) {
+            this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent));
+        //}
     }
 }

@@ -22,18 +22,22 @@ public class DockServer extends CyclicBehaviour {
         if (msg != null) {
             String title = msg.getContent();
 
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent " +
-                    this.myAgent.getAID().getName()) + ": Passo 5 recebendo mensagem ACCEPT_PROPOSAL"+title);
-            ACLMessage reply = msg.createReply();
 
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent " +
+                    this.myAgent.getAID().getName()) + ": Passo 5 recebendo mensagem ACCEPT_PROPOSAL" + title);
+
+            ACLMessage reply = msg.createReply();
 
             // Alocar comboio para plataforma livre
             int plataformNumber = ag.freePlataform;
+
+
             ag.station.setTrainID(msg.getSender(),plataformNumber);
             // Passo 6 informar alocacao de plataforma
             reply.setPerformative(ACLMessage.INFORM);
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent " +
                     this.myAgent.getAID().getName()) + ": Informing to Agent " + msg.getSender().getName());
+            reply.setContent("155");
             this.myAgent.send(reply);
         } else {
             this.block();

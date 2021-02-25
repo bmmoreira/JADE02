@@ -20,11 +20,13 @@ public class OfferDocking extends CyclicBehaviour {
         MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
         ACLMessage msg = this.myAgent.receive(mt);
 
+
+
         // so executa quando receber mensagem (not null)
         if (msg != null) {
 
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
-                    ": Message received from " + msg.getContent());
+                    ": Message received from " + msg.getContent() + " " + msg.getConversationId());
 
             ACLMessage reply = msg.createReply();
 

@@ -1,11 +1,13 @@
 package metro.behaviors.train;
 
 
+import examples.bookTrading.BookBuyerAgent;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import metro.StationAgent;
 import metro.TrainAgent;
 import metro.extras.Ansi;
 
@@ -18,7 +20,7 @@ public class RequestDock extends Behaviour {
     private AID gateAgent;
     private TrainAgent ag;
     private int dockingplataform;
-
+    private int repliesCnt;
     private int step, currentStation;
     private MessageTemplate mt; // template para receber respostas(replies)
 
@@ -26,10 +28,14 @@ public class RequestDock extends Behaviour {
         this.ag = agent;
         this.currentStation = 0;
         this.step = 0;
+        this.repliesCnt = 0;
     }
 
     // neste metodo incluimos codigo referente ao comportamento a ser executado pelo agente
     public void action(){
+        String  myName= myAgent.getAID().getName();
+        String className = getClass().getName();
+
 
         ACLMessage reply;
 
@@ -45,6 +51,11 @@ public class RequestDock extends Behaviour {
                 cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Valor unico.
                 // envia mensagem
                 this.myAgent.send(cfp);
+
+                System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
+                        ": Requesting dock operation at station " + ag.currentStation + " - ACLMessage.CFP - " +
+                        new Ansi(Ansi.BACKGROUND_YELLOW, Ansi.BLACK).format("Class: " + className));
+
                 // Preparar template para ofertas de agentes
                 this.mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Docking-operation"), MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
                 this.step = 1;
@@ -64,7 +75,11 @@ public class RequestDock extends Behaviour {
                                 this.myAgent.getAID().getName()) +  ": Passo 3 - Agent Station " + sName +
                                 " informa plataforma livre " + dockingplataform);
                     }
-                    this.step = 2;
+
+                   // ++this.repliesCnt;
+                   // if (this.repliesCnt >= ag.stationAgents.length) {
+                        this.step = 2;
+                  //  }
                 } else {
                     this.block();
                 }
@@ -86,15 +101,21 @@ public class RequestDock extends Behaviour {
                 reply = this.myAgent.receive(this.mt);
                 if (reply != null) {
                     if (reply.getPerformative() == ACLMessage.INFORM) {
+                        String agentName = reply.getSender().getName();
+                        String plataformLoad = reply.getContent();
+
                         // docking successfully
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
                                 this.myAgent.getAID().getName()) + ": Passo 6 - Successfully docked with agent " +
-                                reply.getSender().getName());
+                                agentName);
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
                                 this.myAgent.getAID().getName()) + ": Opening train doors at " +
-                                reply.getSender().getName() + " plataform " + dockingplataform);
+                                agentName + " on plataform " + dockingplataform);
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                this.myAgent.getAID().getName()) + ": Ready to passengers board at " +
+                                this.myAgent.getAID().getName()) + ": Plataform on " +
+                                agentName + " with load number of " + plataformLoad + " passengers");
+                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
+                                this.myAgent.getAID().getName()) + ": Ready to board passengers at " +
                                 new java.util.Date(System.currentTimeMillis()));
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
                                 this.myAgent.getAID().getName()) + ": " + ag.train.getTrainDefaultDockTime()+

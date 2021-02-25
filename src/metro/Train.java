@@ -9,7 +9,7 @@ public class Train {
     private int trainCapacity;
     private int trainPassengerLoad; // actual passenger load
     private int trainTrackSector; // which sector currently is the Train in the railtrack
-    private int trainDefaultDockTime = 5;
+    private int trainDefaultDockTime = 2;
 
     public Train(AID trainAID){
         this.trainID = trainAID;

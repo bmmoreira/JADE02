@@ -29,8 +29,7 @@ public class TrainAgent extends Agent {
                  " is ready.");
         Object[] args = this.getArguments();
         if (args != null && args.length > 0) {
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: "+this.getAID().getName()) +
-                    " - Enable Stations: "+ (String)args[0]);
+            // set max numbers of station to course
             stations = Integer.valueOf(args[0].toString()) ;
         }
 
