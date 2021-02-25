@@ -72,7 +72,7 @@ public class TASS extends JFrame implements ActionListener {
             System.out.println("Start pressed");
             //imgPanel.ellipse.setFrame(315, 192, 50, 50);
             imgPanel.repaint();
-            myAgent.createAgent("t1", "metro.TrainAgent", new String[]{"1"});
+            myAgent.createAgent("t1", "metro.TrainAgent", new String[]{"3"});
         } else if(src.getActionCommand().equals("Stop")){
             System.out.println("Stop pressed");
         }

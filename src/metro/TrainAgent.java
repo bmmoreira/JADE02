@@ -19,20 +19,22 @@ public class TrainAgent extends Agent {
     private int stations;
     public int currentStation = 0;
     public AID[] stationAgents;
+    public Train train;
 
 
 
     protected void setup() {
 
-        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                this.getAID().getName() + " is ready.");
+        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+this.getAID().getName()) +
+                 " is ready.");
         Object[] args = this.getArguments();
         if (args != null && args.length > 0) {
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                    "Enable Stations: "+ (String)args[0]);
-            stations = Integer.valueOf((String)args[0]) ;
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: "+this.getAID().getName()) +
+                    " - Enable Stations: "+ (String)args[0]);
+            stations = Integer.valueOf(args[0].toString()) ;
         }
 
+        this.train = new Train(this.getAID());
         /*
          *  Aporta na primeira estacao e faz troca complexa
          *  de mensagens entre Agente de Comboio e Agente de Estacao

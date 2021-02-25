@@ -13,6 +13,8 @@ import jade.wrapper.ContainerController;
 import metro.gui.TASS;
 import metro.extras.Ansi;
 
+import java.util.ArrayList;
+
 /*
     Ideia deste agente seria estar conectado a uma sala de controle central.
     Determinar paragens totais, partidas, estacoes ativas etc..
@@ -23,6 +25,7 @@ public class CentralControlAgent extends Agent{
 
     public TASS myGui;
     private AgentController t1 = null;
+    private ArrayList<String> stationTrackList = new ArrayList<>();
 
     protected void setup() {
         System.out.println(new Ansi(Ansi.ITALIC, Ansi.BLUE).format("Central Agent: ") +
@@ -32,6 +35,11 @@ public class CentralControlAgent extends Agent{
         // Cria estacao padrao
         this.createAgent("st1", "metro.StationAgent", new String[]{"1"});
         this.createAgent("st2", "metro.StationAgent", new String[]{"2"});
+        this.createAgent("st3", "metro.StationAgent", new String[]{"3"});
+        // Adciona a ordem das Estacoes a ser usada pelos comboios
+        stationTrackList.add("st1"+"@metro.StationAgent");
+        stationTrackList.add("st2"+"@metro.StationAgent");
+        stationTrackList.add("st2"+"@metro.StationAgent");
 
         /*
          *   Recebe mensagens de TrainAgents
@@ -47,7 +55,8 @@ public class CentralControlAgent extends Agent{
             this.t1 = container.createNewAgent(name, className, args);
             this.t1.start();
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.BLUE).format("Central Agent: ") +
-                    "Initializing Agent: "+ name + " " + className);
+                    "Initializing Agent "+ name + "@" + className);
+
         }
         catch (Exception e) {
             e.printStackTrace();

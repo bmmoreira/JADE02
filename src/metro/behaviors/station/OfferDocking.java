@@ -23,8 +23,8 @@ public class OfferDocking extends CyclicBehaviour {
         // so executa quando receber mensagem (not null)
         if (msg != null) {
 
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                    "Message received: " + msg.getContent());
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
+                    ": Message received from " + msg.getContent());
 
             ACLMessage reply = msg.createReply();
 
@@ -32,20 +32,20 @@ public class OfferDocking extends CyclicBehaviour {
 
             if (ag.freePlataform != 0) {
                 String trainID = msg.getContent();
-                System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                        "Offering docking to train: " + trainID + " on plataform " + ag.freePlataform);
+                System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
+                        ": Passo 2 - Offering docking to train: " + trainID + " on plataform " + ag.freePlataform);
                 reply.setPerformative(ACLMessage.PROPOSE);
                 // envie mensagem de resposta com status da plataforma
                 reply.setContent(String.valueOf(ag.freePlataform));
             } else {
                 reply.setPerformative(ACLMessage.REFUSE);
                 System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                        "Sending ACLMessage.REFUSE, no available plataforms.");
+                        ": Sending ACLMessage.REFUSE, no available plataforms.");
                 reply.setContent("not-available plataforms");
             }
             this.myAgent.send(reply);
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                    "enviando mensagem ACLMessage.Propose " + ag.freePlataform);
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
+                    ": Enviando mensagem ACLMessage.Propose to dock plataform " + ag.freePlataform);
         } else {
             this.block();
         }

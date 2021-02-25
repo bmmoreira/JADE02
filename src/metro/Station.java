@@ -95,8 +95,9 @@ public class Station {
     private class Plataform{
 
         private int plataformID;
-        private AID dockedtrainID;
+        private AID dockedtrainID; // current train docked
         private int plataformStatus = 0;
+        private long dockTime = System.currentTimeMillis(); // time that train docked
 
         Plataform(int num){
             this.plataformID = num;

@@ -17,6 +17,7 @@ public class RequestDock extends Behaviour {
 
     private AID gateAgent;
     private TrainAgent ag;
+    private int dockingplataform;
 
     private int step, currentStation;
     private MessageTemplate mt; // template para receber respostas(replies)
@@ -56,11 +57,12 @@ public class RequestDock extends Behaviour {
                     // resposta recebida
                     if(reply.getPerformative() == ACLMessage.PROPOSE){
                         // this is an offer
-                        int plataformNumber = Integer.parseInt(reply.getContent());
+                        dockingplataform = Integer.parseInt(reply.getContent());
                         gateAgent = reply.getSender();
                         String sName = reply.getSender().getName();
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                                "Station: "+sName+" Informa plataforma Livre: :"+plataformNumber);
+                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent " +
+                                this.myAgent.getAID().getName()) +  ": Passo 3 - Agent Station " + sName +
+                                " informa plataforma livre " + dockingplataform);
                     }
                     this.step = 2;
                 } else {
@@ -80,17 +82,26 @@ public class RequestDock extends Behaviour {
                 this.step = 3;
                 break;
             case  3:
-                // receber confimacao de docking de volta
+                // Passo 6 - receber confimacao de docking de volta
                 reply = this.myAgent.receive(this.mt);
                 if (reply != null) {
                     if (reply.getPerformative() == ACLMessage.INFORM) {
                         // docking successfully
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                                "Successfully docked with agent " + reply.getSender().getName());
-
+                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
+                                this.myAgent.getAID().getName()) + ": Passo 6 - Successfully docked with agent " +
+                                reply.getSender().getName());
+                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
+                                this.myAgent.getAID().getName()) + ": Opening train doors at " +
+                                reply.getSender().getName() + " plataform " + dockingplataform);
+                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
+                                this.myAgent.getAID().getName()) + ": Ready to passengers board at " +
+                                new java.util.Date(System.currentTimeMillis()));
+                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
+                                this.myAgent.getAID().getName()) + ": " + ag.train.getTrainDefaultDockTime()+
+                        " minutes to close train doors");
                     } else {
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                                "Attempt failed");
+                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
+                                this.myAgent.getAID().getName()) + "Attempt failed");
                         this.done();
                     }
 

@@ -15,7 +15,7 @@ import java.util.Hashtable;
 
 public class StationAgent extends Agent {
 
-
+    private String agentName;
     private AID[] trainAgents;
     public Station station;
     public int freePlataform; // which plataform is free - 2 is full
@@ -23,12 +23,14 @@ public class StationAgent extends Agent {
     // Put agent initializations here
     protected void setup() {
         Object[] args;
-        System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") + " " +
-                this.getAID().getName() + " is ready.");
+
         try {
             args = this.getArguments();
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                    "Station number: " + (String) args[0] + " initialized.");
+            this.agentName = getAID().getName();
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+ agentName)
+                    + ": " + " is ready.");
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+ agentName) +
+                    ": " + (String) args[0] + " initialized.");
             if (args != null && args.length > 0) {
 
                 int sNumber = Integer.valueOf((String) args[0]);
@@ -62,8 +64,6 @@ public class StationAgent extends Agent {
 
         this.addBehaviour(new metro.behaviors.station.OfferDocking(this));
         this.addBehaviour(new metro.behaviors.station.DockServer(this));
-
-
 
     }
 

@@ -20,8 +20,8 @@ public class InitDock extends OneShotBehaviour {
 
     @Override
     public void action() {
-        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                "Trying dock operation at station " + ag.currentStation);
+        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ this.myAgent.getAID().getName()) +
+                ": trying dock operation at station " + ag.currentStation);
         DFAgentDescription template = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Station-service");
@@ -29,10 +29,10 @@ public class InitDock extends OneShotBehaviour {
 
         try {
             DFAgentDescription[] result = DFService.search(this.myAgent, template);
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                    "Searching in Directory Facilitator Service");
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent: ") +
-                    "Found the following station agents:");
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ this.myAgent.getAID().getName()) +
+                    ": searching in Directory Facilitator Service");
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ this.myAgent.getAID().getName()) +
+                    ": Found the following station agents:");
             ag.stationAgents = new AID[result.length];
 
             for(int i = 0; i < result.length; ++i) {
