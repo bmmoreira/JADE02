@@ -1,7 +1,6 @@
 package metro.behaviors.train;
 
 
-import examples.bookTrading.BookBuyerAgent;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -45,7 +44,11 @@ public class RequestDock extends Behaviour {
                 // Troca de Mensagens TrainAgent-StationAgent - Passo 1
                 ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
                 // configurar como recebedor das mensagens a proxima estacao
-                cfp.addReceiver(ag.stationAgents[ag.currentStation]);
+                System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
+                        ": Adding receiver " + ag.currentStation );
+                for ( AID stationAgentAID : ag.stationAgents ) {
+                    cfp.addReceiver(stationAgentAID);
+                }
                 cfp.setContent(String.valueOf(ag.getAID().getName()));
                 cfp.setConversationId("Docking-operation");
                 cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Valor unico.
