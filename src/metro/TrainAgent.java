@@ -44,7 +44,7 @@ public class TrainAgent extends Agent {
          *   Envia mensagem para Controle Central informando train docked
          *  Controle Central mostra comboio na estacao na GUI
          */
-        addBehaviour(new metro.behaviors.train.InformCentralAgent("trainDock"));
+        //addBehaviour(new metro.behaviors.train.InformCentralAgent("trainDock"));
 
 
 

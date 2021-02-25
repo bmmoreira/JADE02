@@ -53,8 +53,8 @@ public class StationAgent extends Agent {
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
-        sd.setType("Station-service");
-        sd.setName("Dock-Operation");
+        sd.setType("Docking-operation");
+        sd.setName("Jade-Docking-operation");
         dfd.addServices(sd);
         try {
             DFService.register(this, dfd);

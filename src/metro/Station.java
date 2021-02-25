@@ -2,9 +2,10 @@ package metro;
 
 import jade.core.AID;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Station {
+public class Station implements Serializable {
 
     public Station(int sNum, int pNum) {
 
@@ -24,6 +25,16 @@ public class Station {
     private boolean stationFull;
     private int trainFrequency; // train interval in minutes
     private int trainDefaultDockTime; // Default stop time for boarding passengers
+    private Train dockedTrain;
+
+
+    public Train getDockedTrain() {
+        return dockedTrain;
+    }
+
+    public void setDockedTrain(Train dockedTrain) {
+        this.dockedTrain = dockedTrain;
+    }
 
     public int getTrainDefaultDockTime() {
         return trainDefaultDockTime;

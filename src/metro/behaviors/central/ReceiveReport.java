@@ -18,13 +18,17 @@ public class ReceiveReport extends CyclicBehaviour {
     public void action() {
         MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
         ACLMessage msg = this.myAgent.receive(mt);
+
         //ACLMessage msg = receive(mt);
 
         if(msg != null){
-            if(msg.getContent().equals("trainDock")){
+            String aName = msg.getSender().getName();
+            String id = msg.getConversationId();
+            if(msg.getConversationId().equals("inform-Dock")){
                 System.out.println(new Ansi(Ansi.ITALIC, Ansi.BLUE).format("Central Agent: ") +
-                        "Message from" + msg.getSender() +" content: " + msg.getContent());
-                myGui.paintrain(msg.getSender().getName());
+                        "Message from " + aName +" Station: " + msg.getContent() +
+                        " ID: "+ id );
+                myGui.paintrain(aName);
             }
         } else {
             block();

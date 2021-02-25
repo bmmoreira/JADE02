@@ -18,7 +18,7 @@ public class InformCentralAgent extends OneShotBehaviour {
         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
         msg.addReceiver(new AID("ca@metro-system"));
         msg.setContent(action);
-        msg.setConversationId("inform-Control");
+        msg.setConversationId("inform-Dock");
         //msg.setReplyWith("cfp"+System.currentTimeMillis()); // Valor unico.
         // envia mensagem
         this.myAgent.send(msg);
