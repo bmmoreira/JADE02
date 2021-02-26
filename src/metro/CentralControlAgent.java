@@ -10,6 +10,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
+import metro.behaviors.central.OperateCentral;
 import metro.gui.TASS;
 import metro.extras.Ansi;
 
@@ -26,6 +27,7 @@ public class CentralControlAgent extends Agent{
     public TASS myGui;
     private AgentController t1 = null;
     private ArrayList<String> stationTrackList = new ArrayList<>();
+    public boolean switchInform = false;
 
     protected void setup() {
         System.out.println(new Ansi(Ansi.ITALIC, Ansi.BLUE).format("Central Agent: ") +
@@ -36,6 +38,7 @@ public class CentralControlAgent extends Agent{
         this.createAgent("st1", "metro.StationAgent", new String[]{"1"});
         this.createAgent("st2", "metro.StationAgent", new String[]{"2"});
         this.createAgent("st3", "metro.StationAgent", new String[]{"3"});
+        this.createAgent("t1", "metro.TrainAgent", new String[]{"3"});
         // Adciona a ordem das Estacoes a ser usada pelos comboios
         stationTrackList.add("st1"+"@metro.StationAgent");
         stationTrackList.add("st2"+"@metro.StationAgent");
@@ -46,6 +49,8 @@ public class CentralControlAgent extends Agent{
          *   MatchPerformative(ACLMessage.INFORM)
          */
         addBehaviour(new metro.behaviors.central.ReceiveReport(myGui));
+
+        addBehaviour(new metro.behaviors.central.OperateCentral(this,5000));
 
     }
     public void createAgent(String name,String className,Object[]args){

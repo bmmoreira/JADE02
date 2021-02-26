@@ -6,7 +6,10 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
+import metro.Station;
 import metro.StationAgent;
+import metro.Train;
 import metro.TrainAgent;
 import metro.extras.Ansi;
 
@@ -21,6 +24,9 @@ public class RequestDock extends Behaviour {
     private int dockingplataform;
     private int repliesCnt;
     private int step, currentStation;
+    private String  myName;
+    private String className;
+    private String agentType;
 
     private MessageTemplate mt; // template para receber respostas(replies)
 
@@ -33,9 +39,9 @@ public class RequestDock extends Behaviour {
 
     // neste metodo incluimos codigo referente ao comportamento a ser executado pelo agente
     public void action(){
-        String  myName= myAgent.getAID().getName();
-        String className = getClass().getName();
-
+        this.myName= myAgent.getAID().getName();
+        this.className = getClass().getName();
+        this.agentType = "Train Agent ";
 
         ACLMessage reply;
 
@@ -54,11 +60,10 @@ public class RequestDock extends Behaviour {
                 cfp.setConversationId("Docking-operation");
                 cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Valor unico.
                 // envia mensagem
+                printLogHead( ": Passo 1 - Requesting dock operation at station " + ag.currentStation + " - ACLMessage.CFP - ");
                 this.myAgent.send(cfp);
 
-                System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
-                        ": Requesting dock operation at station " + ag.currentStation + " - ACLMessage.CFP - " +
-                        new Ansi(Ansi.BACKGROUND_YELLOW, Ansi.BLACK).format("Class: " + className));
+
 
                 // Preparar template para ofertas de agentes
                 this.mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Docking-operation"), MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
@@ -75,9 +80,9 @@ public class RequestDock extends Behaviour {
                         dockingplataform = Integer.parseInt(reply.getContent());
                         gateAgent = reply.getSender();
                         String sName = reply.getSender().getName();
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent " +
-                                this.myAgent.getAID().getName()) +  ": Passo 3 - Agent Station " + sName +
-                                " informa plataforma livre " + dockingplataform);
+
+                        printLogHead( ": Passo 3 - Agent Station " + sName + " informa plataforma livre " + dockingplataform);
+
                     }
 
                     //++this.repliesCnt;
@@ -96,6 +101,9 @@ public class RequestDock extends Behaviour {
                 docking.setContent(String.valueOf(ag.currentStation));
                 docking.setConversationId("Docking-operation");
                 docking.setReplyWith("docking" + System.currentTimeMillis());
+
+                printLog( ": Passo 4 - Enviando ACCEPT_PROPOSAL para " + gateAgent.getName());
+
                 this.myAgent.send(docking);
                 this.mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Docking-operation"), MessageTemplate.MatchInReplyTo(docking.getReplyWith()));
                 this.step = 3;
@@ -108,27 +116,18 @@ public class RequestDock extends Behaviour {
                         String senderName = reply.getSender().getName();
                         String plataformLoad = reply.getContent();
 
-                        // docking successfully
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                myName) + ": Passo 6 - Successfully docked with agent " +
-                                senderName);
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                myName) + ": Opening train doors at " +
-                                senderName + " on plataform " + dockingplataform);
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                myName) + ": Plataform on " +
-                                senderName + " with load number of " + plataformLoad + " passengers");
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                myName) + ": Ready to board passengers at " +
-                                new java.util.Date(System.currentTimeMillis()));
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                myName) + ": " + ag.train.getTrainDefaultDockTime()+
-                        " minutes to close train doors");
+                        printLogHead(": Passo 6 - Successfully docked with agent " + senderName);
+                        printLog(": Successfully docked with agent " + senderName + " Opening train doors on plataform " + dockingplataform);
+                        printLog(": Plataform on " + senderName + " with load number of " + plataformLoad + " passengers");
+                        printLog(": Ready to board passengers at " + new java.util.Date(System.currentTimeMillis()));
+                        printLog(": " + ag.train.getTrainDefaultDockTime() + " minutes to close train doors");
+
+
                         // informa ao Central Control Agent
                         ag.addBehaviour(new metro.behaviors.train.InformCentralAgent(senderName));
                     } else {
-                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                this.myAgent.getAID().getName()) + "Attempt failed");
+                        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format(agentType +
+                                myName) + "Attempt failed");
                         this.done();
                     }
 
@@ -154,4 +153,12 @@ public class RequestDock extends Behaviour {
         return this.step == 2 && this.gateAgent == null || this.step == 4;
     }
 
+    private void printLog(String text){
+        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format(agentType +
+                myName) + text);
+    }
+    private void printLogHead(String text){
+        System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format(agentType +
+                myName) + text + " " + new Ansi(Ansi.BACKGROUND_YELLOW, Ansi.BLACK).format("Class: " + className));
+    }
 }

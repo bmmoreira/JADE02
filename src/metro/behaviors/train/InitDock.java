@@ -1,6 +1,7 @@
 package metro.behaviors.train;
 
 import jade.core.AID;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -13,6 +14,7 @@ public class InitDock extends OneShotBehaviour {
 
     private TrainAgent ag;
     private String myName;
+    //private int step = 0;
 
     public InitDock(TrainAgent agent) {
         this.ag = agent;
@@ -23,7 +25,6 @@ public class InitDock extends OneShotBehaviour {
     public void action() {
         this.myName= myAgent.getAID().getName();
         String className = getClass().getName();
-
 
         DFAgentDescription template = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
@@ -52,7 +53,16 @@ public class InitDock extends OneShotBehaviour {
         }
 
         //for(int i = 0; i<ag.stationAgents.length;i++) {
-            this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent));
+
         //}
+        //this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent));
+
+
+
+
+
     }
+
+
+
 }

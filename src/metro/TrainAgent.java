@@ -20,6 +20,7 @@ public class TrainAgent extends Agent {
     public int currentStation = 0;
     public AID[] stationAgents;
     public Train train;
+    public int step = 0;
 
 
 
@@ -46,7 +47,7 @@ public class TrainAgent extends Agent {
          */
         //addBehaviour(new metro.behaviors.train.InformCentralAgent("trainDock"));
 
-
+        addBehaviour(new metro.behaviors.train.TrackMove());
 
         // TODO: melhorar isto. Aguardar que os agentes existam em vez de usar Thread.sleep
         // Deveria estar no "StationAgent"?

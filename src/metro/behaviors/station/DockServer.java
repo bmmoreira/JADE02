@@ -4,7 +4,10 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import metro.StationAgent;
+import metro.Train;
 import metro.extras.Ansi;
+
+import java.io.IOException;
 
 public class DockServer extends CyclicBehaviour {
 
@@ -15,6 +18,9 @@ public class DockServer extends CyclicBehaviour {
     }
 
     public void action() {
+        String  myName= myAgent.getAID().getName();
+        String className = getClass().getName();
+
         // se oferta de docking foi aceita - servir a plataforma para o comboio
         // Passo 5 (receber proposta de Aceite do TrainAgent
         MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
@@ -22,9 +28,10 @@ public class DockServer extends CyclicBehaviour {
         if (msg != null) {
             String title = msg.getContent();
 
+            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+ myName) +
+                    ": Passo 5 recebendo mensagem ACCEPT_PROPOSAL from " + msg.getSender().getName() + " " +
+                    new Ansi(Ansi.BACKGROUND_GREEN, Ansi.BLACK).format("Class: " + className));
 
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent " +
-                    this.myAgent.getAID().getName()) + ": Passo 5 recebendo mensagem ACCEPT_PROPOSAL" + title);
 
             ACLMessage reply = msg.createReply();
 
@@ -37,7 +44,17 @@ public class DockServer extends CyclicBehaviour {
             reply.setPerformative(ACLMessage.INFORM);
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent " +
                     this.myAgent.getAID().getName()) + ": Informing to Agent " + msg.getSender().getName());
+
+
+
+            // chama metodo para calcular numero de passageiros atual na plataforma
             reply.setContent("155");
+            // envia dados da Station
+            try {
+                reply.setContentObject(new Train());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             this.myAgent.send(reply);
         } else {
             this.block();

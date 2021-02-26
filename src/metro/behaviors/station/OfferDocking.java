@@ -3,12 +3,20 @@ package metro.behaviors.station;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import metro.Station;
 import metro.StationAgent;
+import metro.Train;
 import metro.extras.Ansi;
+
+import java.io.IOException;
+import java.io.Serializable;
 
 public class OfferDocking extends CyclicBehaviour {
 
     private StationAgent ag;
+    private String  myName;
+    private String className;
+    private String agentType;
 
     public OfferDocking(StationAgent ag) {
 
@@ -16,17 +24,19 @@ public class OfferDocking extends CyclicBehaviour {
     }
 
     public void action() {
+
+        this.myName= myAgent.getAID().getName();
+        this.className = getClass().getName();
+        this.agentType = "Train Agent ";
+
         // template para receber CFP proposta de TrainAgent - Troca de Mensagens Passo 2
         MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
         ACLMessage msg = this.myAgent.receive(mt);
 
-
-
         // so executa quando receber mensagem (not null)
         if (msg != null) {
 
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
-                    ": Message received from " + msg.getContent() + " " + msg.getConversationId());
+            printLogHead(": Passo 2 - Message CFP received from " + msg.getSender().getName() + " ID: " + msg.getConversationId());
 
             ACLMessage reply = msg.createReply();
 
@@ -34,23 +44,35 @@ public class OfferDocking extends CyclicBehaviour {
 
             if (ag.freePlataform != 0) {
                 String trainID = msg.getContent();
-                System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
-                        ": Passo 2 - Offering docking to train: " + trainID + " on plataform " + ag.freePlataform);
                 reply.setPerformative(ACLMessage.PROPOSE);
                 // envie mensagem de resposta com status da plataforma
+                try {
+                    reply.setContentObject(new Train());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 reply.setContent(String.valueOf(ag.freePlataform));
+                printLog(": Sending ACLMessage.Propose to dock plataform " + ag.freePlataform);
             } else {
                 reply.setPerformative(ACLMessage.REFUSE);
-                System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                        ": Sending ACLMessage.REFUSE, no available plataforms.");
                 reply.setContent("not-available plataforms");
+                printLog(": Sending ACLMessage.REFUSE, no available plataforms.");
             }
             this.myAgent.send(reply);
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
-                    ": Enviando mensagem ACLMessage.Propose to dock plataform " + ag.freePlataform);
+
         } else {
             this.block();
         }
 
     }
+
+    private void printLog(String text){
+        System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format(agentType +
+                myName) + text);
+    }
+    private void printLogHead(String text){
+        System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format(agentType +
+                myName) + text + " " + new Ansi(Ansi.BACKGROUND_GREEN, Ansi.BLACK).format("Class: " + className));
+    }
+
 }

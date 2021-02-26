@@ -2,7 +2,9 @@ package metro;
 
 import jade.core.AID;
 
-public class Train {
+import java.io.Serializable;
+
+public class Train implements Serializable {
 
     private AID trainID;
     private boolean trainDocked; // if its on a plataform is docked
@@ -11,6 +13,9 @@ public class Train {
     private int trainTrackSector; // which sector currently is the Train in the railtrack
     private int trainDefaultDockTime = 2;
 
+    public Train(){
+
+    }
     public Train(AID trainAID){
         this.trainID = trainAID;
 

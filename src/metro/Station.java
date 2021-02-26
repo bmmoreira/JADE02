@@ -7,6 +7,15 @@ import java.util.ArrayList;
 
 public class Station implements Serializable {
 
+    private String stationName;
+    private int stationNumber;
+    public ArrayList<Plataform> plataforms;
+    // in case both trains are at both plataforms Station is full
+    private boolean stationFull;
+    private int trainFrequency; // train interval in minutes
+    private int trainDefaultDockTime; // Default stop time for boarding passengers
+    private Train dockedTrain;
+
     public Station(int sNum, int pNum) {
 
         this.plataforms = new ArrayList<Plataform>();
@@ -17,16 +26,6 @@ public class Station implements Serializable {
         }
 
     }
-
-    private String stationName;
-    private int stationNumber;
-    public ArrayList<Plataform> plataforms;
-    // in case both trains are at both plataforms Station is full
-    private boolean stationFull;
-    private int trainFrequency; // train interval in minutes
-    private int trainDefaultDockTime; // Default stop time for boarding passengers
-    private Train dockedTrain;
-
 
     public Train getDockedTrain() {
         return dockedTrain;
@@ -103,7 +102,7 @@ public class Station implements Serializable {
         this.plataforms.get(index).setPlataformStatus(num);
     }
 
-    private class Plataform{
+    private class Plataform implements Serializable{
 
         private int plataformID;
         private AID dockedtrainID; // current train docked

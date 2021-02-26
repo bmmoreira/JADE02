@@ -25,5 +25,4 @@ public class InformCentralAgent extends OneShotBehaviour {
 
     }
 
-
 }
