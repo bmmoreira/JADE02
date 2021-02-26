@@ -27,7 +27,7 @@ public class InitDock extends OneShotBehaviour {
 
         DFAgentDescription template = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
-        sd.setType("Station-service");
+        sd.setType("Docking-operation");
         template.addServices(sd);
 
         try {

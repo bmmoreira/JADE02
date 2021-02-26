@@ -21,6 +21,7 @@ public class RequestDock extends Behaviour {
     private int dockingplataform;
     private int repliesCnt;
     private int step, currentStation;
+
     private MessageTemplate mt; // template para receber respostas(replies)
 
     public RequestDock(TrainAgent agent) {
@@ -79,10 +80,10 @@ public class RequestDock extends Behaviour {
                                 " informa plataforma livre " + dockingplataform);
                     }
 
-                   // ++this.repliesCnt;
-                   // if (this.repliesCnt >= ag.stationAgents.length) {
+                    //++this.repliesCnt;
+                    //if (this.repliesCnt >= ag.stationAgents.length) {
                         this.step = 2;
-                  //  }
+                    //}
                 } else {
                     this.block();
                 }
@@ -104,25 +105,27 @@ public class RequestDock extends Behaviour {
                 reply = this.myAgent.receive(this.mt);
                 if (reply != null) {
                     if (reply.getPerformative() == ACLMessage.INFORM) {
-                        String agentName = reply.getSender().getName();
+                        String senderName = reply.getSender().getName();
                         String plataformLoad = reply.getContent();
 
                         // docking successfully
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                this.myAgent.getAID().getName()) + ": Passo 6 - Successfully docked with agent " +
-                                agentName);
+                                myName) + ": Passo 6 - Successfully docked with agent " +
+                                senderName);
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                this.myAgent.getAID().getName()) + ": Opening train doors at " +
-                                agentName + " on plataform " + dockingplataform);
+                                myName) + ": Opening train doors at " +
+                                senderName + " on plataform " + dockingplataform);
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                this.myAgent.getAID().getName()) + ": Plataform on " +
-                                agentName + " with load number of " + plataformLoad + " passengers");
+                                myName) + ": Plataform on " +
+                                senderName + " with load number of " + plataformLoad + " passengers");
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                this.myAgent.getAID().getName()) + ": Ready to board passengers at " +
+                                myName) + ": Ready to board passengers at " +
                                 new java.util.Date(System.currentTimeMillis()));
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                                this.myAgent.getAID().getName()) + ": " + ag.train.getTrainDefaultDockTime()+
+                                myName) + ": " + ag.train.getTrainDefaultDockTime()+
                         " minutes to close train doors");
+                        // informa ao Central Control Agent
+                        ag.addBehaviour(new metro.behaviors.train.InformCentralAgent(senderName));
                     } else {
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
                                 this.myAgent.getAID().getName()) + "Attempt failed");
@@ -130,6 +133,8 @@ public class RequestDock extends Behaviour {
                     }
 
                     this.step = 4;
+
+                    ag.currentStation++;
                 } else {
                     this.block();
                 }
