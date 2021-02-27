@@ -39,6 +39,8 @@ public class CentralControlAgent extends Agent{
         this.createAgent("st2", "metro.StationAgent", new String[]{"2"});
         this.createAgent("st3", "metro.StationAgent", new String[]{"3"});
         this.createAgent("t1", "metro.TrainAgent", new String[]{"3"});
+        // Criar numero aleatório de passageiros
+        this.createAgent("p1", "metro.PassengerLaunchAgent", new String[]{"4"});
         // Adciona a ordem das Estacoes a ser usada pelos comboios
         stationTrackList.add("st1"+"@metro.StationAgent");
         stationTrackList.add("st2"+"@metro.StationAgent");
