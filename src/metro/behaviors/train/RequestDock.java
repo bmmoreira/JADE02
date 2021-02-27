@@ -38,16 +38,16 @@ public class RequestDock extends Behaviour {
 
 
         ACLMessage reply;
-
+        // TODO: define what step is
         switch (step){
             case 0:
                 // envia mensagem Station Agent pedindo plataformas livres
                 // Troca de Mensagens TrainAgent-StationAgent - Passo 1
                 ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
                 // configurar como recebedor das mensagens a proxima estacao
-                System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
-                        ": Adding receiver " + ag.currentStation );
                 for ( AID stationAgentAID : ag.stationAgents ) {
+                    System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
+                            ": Adding receiver " + stationAgentAID );
                     cfp.addReceiver(stationAgentAID);
                 }
                 cfp.setContent(String.valueOf(ag.getAID().getName()));
@@ -56,9 +56,9 @@ public class RequestDock extends Behaviour {
                 // envia mensagem
                 this.myAgent.send(cfp);
 
-                System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
-                        ": Requesting dock operation at station " + ag.currentStation + " - ACLMessage.CFP - " +
-                        new Ansi(Ansi.BACKGROUND_YELLOW, Ansi.BLACK).format("Class: " + className));
+                //System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
+                //        ": Requesting dock operation at station " + ag.currentStation + " - ACLMessage.CFP - " +
+                //        new Ansi(Ansi.BACKGROUND_YELLOW, Ansi.BLACK).format("Class: " + className));
 
                 // Preparar template para ofertas de agentes
                 this.mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Docking-operation"), MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
@@ -91,6 +91,9 @@ public class RequestDock extends Behaviour {
             case 2:
                 // envia mensagem de aceite de volta para estacao
                 // Passo 4
+                System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent " +
+                        this.myAgent.getAID().getName()) +  ": Passo 4 - Sending accept response to Agent Station " + gateAgent.getName() +
+                        " to stop at platform " + dockingplataform);
                 ACLMessage docking = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
                 docking.addReceiver(gateAgent);
                 docking.setContent(String.valueOf(ag.currentStation));
@@ -105,6 +108,7 @@ public class RequestDock extends Behaviour {
                 reply = this.myAgent.receive(this.mt);
                 if (reply != null) {
                     if (reply.getPerformative() == ACLMessage.INFORM) {
+
                         String senderName = reply.getSender().getName();
                         String plataformLoad = reply.getContent();
 
@@ -112,6 +116,7 @@ public class RequestDock extends Behaviour {
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
                                 myName) + ": Passo 6 - Successfully docked with agent " +
                                 senderName);
+                        ag.addBehaviour(new metro.behaviors.train.RequestStationPassengerLoad(gateAgent));
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
                                 myName) + ": Opening train doors at " +
                                 senderName + " on plataform " + dockingplataform);
@@ -126,6 +131,7 @@ public class RequestDock extends Behaviour {
                         " minutes to close train doors");
                         // informa ao Central Control Agent
                         ag.addBehaviour(new metro.behaviors.train.InformCentralAgent(senderName));
+
                     } else {
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
                                 this.myAgent.getAID().getName()) + "Attempt failed");

@@ -6,42 +6,43 @@ import jade.lang.acl.MessageTemplate;
 import metro.StationAgent;
 import metro.extras.Ansi;
 
-public class OfferDocking extends CyclicBehaviour {
+public class RespondStationPassengerLoad extends CyclicBehaviour {
 
     private StationAgent ag;
 
-    public OfferDocking(StationAgent ag) {
+    public RespondStationPassengerLoad(StationAgent ag) {
 
         this.ag = ag;
     }
 
     public void action() {
         // template para receber CFP proposta de TrainAgent - Troca de Mensagens Passo 2
-        MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+        MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
         ACLMessage msg = this.myAgent.receive(mt);
 
         // so executa quando receber mensagem (not null)
-        if (msg != null) {
+        if (msg != null && msg.getConversationId().equals("Request-Passenger-Load")) {
 
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
                     ": Message received from " + msg.getContent() + " " + msg.getConversationId());
 
             ACLMessage reply = msg.createReply();
 
-            ag.freePlataform = ag.station.getFreePlataform();
+            ag.setNumberOfPassengers(ag.station.getNumberOfPassengers());
 
-            if (ag.freePlataform != 0) {
-                String trainID = msg.getContent();
+
+            if (ag.getNumberOfPassengers() != 0) {
+
                 System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
-                        ": Passo 2 - Offering docking to train: " + trainID + " on plataform " + ag.freePlataform);
-                reply.setPerformative(ACLMessage.PROPOSE);
-                // envie mensagem de resposta com status da plataforma
-                reply.setContent(String.valueOf(ag.freePlataform));
+                        " we have "+ ag.getNumberOfPassengers() + " waitting to board the train " +": Passo X - Offering docking to train." );
+                reply.setPerformative(ACLMessage.INFORM);
+                // envie mensagem de resposta com número de passageiros na estação
+                reply.setContent(String.valueOf(ag.getNumberOfPassengers()));
             } else {
-                reply.setPerformative(ACLMessage.REFUSE);
+                //reply.setPerformative(ACLMessage.REFUSE);
                 System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent: ") +
-                        ": Sending ACLMessage.REFUSE, no available plataforms.");
-                reply.setContent("not-available plataforms");
+                        ": Sending ACLMessage.REFUSE, no data on passenger load.");
+                reply.setContent("not-available passenger-load");
             }
             this.myAgent.send(reply);
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +

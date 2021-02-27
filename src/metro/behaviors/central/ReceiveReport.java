@@ -29,6 +29,8 @@ public class ReceiveReport extends CyclicBehaviour {
                         "Message from " + aName +" Station: " + msg.getContent() +
                         " ID: "+ id );
                 myGui.paintrain(aName);
+
+
             }
         } else {
             block();

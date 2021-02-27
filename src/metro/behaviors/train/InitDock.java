@@ -52,6 +52,7 @@ public class InitDock extends OneShotBehaviour {
         }
 
         //for(int i = 0; i<ag.stationAgents.length;i++) {
+        // TODO: should this be in TrainAgent ? doesn't seem very good code to add behaviour inside another behaviour
             this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent));
         //}
     }

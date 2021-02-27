@@ -4,6 +4,7 @@ import jade.core.AID;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Station implements Serializable {
 
@@ -26,7 +27,12 @@ public class Station implements Serializable {
     private int trainFrequency; // train interval in minutes
     private int trainDefaultDockTime; // Default stop time for boarding passengers
     private Train dockedTrain;
+    private int numberOfPassengers = new Random().nextInt(300)+100;
 
+
+    public int getNumberOfPassengers(){
+      return numberOfPassengers;
+    }
 
     public Train getDockedTrain() {
         return dockedTrain;

@@ -19,6 +19,14 @@ public class StationAgent extends Agent {
     private AID[] trainAgents;
     public Station station;
     public int freePlataform; // which plataform is free - 2 is full
+    private int numberOfPassengers;
+
+    public void setNumberOfPassengers (int numberOfPassengers){
+        this.numberOfPassengers = numberOfPassengers;
+    }
+    public int getNumberOfPassengers(){
+        return this.numberOfPassengers;
+    }
 
     // Put agent initializations here
     protected void setup() {
@@ -64,9 +72,9 @@ public class StationAgent extends Agent {
 
         this.addBehaviour(new metro.behaviors.station.OfferDocking(this));
         this.addBehaviour(new metro.behaviors.station.DockServer(this));
+        this.addBehaviour(new metro.behaviors.station.RespondStationPassengerLoad(this));
 
     }
-
 
 }
 
