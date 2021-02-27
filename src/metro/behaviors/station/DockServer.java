@@ -37,7 +37,7 @@ public class DockServer extends CyclicBehaviour {
             reply.setPerformative(ACLMessage.INFORM);
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent " +
                     this.myAgent.getAID().getName()) + ": Informing to Agent " + msg.getSender().getName());
-            reply.setContent("155");
+            //reply.setContent("155");
             this.myAgent.send(reply);
         } else {
             this.block();

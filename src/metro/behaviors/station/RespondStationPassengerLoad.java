@@ -24,7 +24,7 @@ public class RespondStationPassengerLoad extends CyclicBehaviour {
         if (msg != null && msg.getConversationId().equals("Request-Passenger-Load")) {
 
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
-                    ": Message received from " + msg.getContent() + " " + msg.getConversationId());
+                    ": Message received from " + msg.getSender().getName() + " " + msg.getConversationId());
 
             ACLMessage reply = msg.createReply();
 
@@ -45,8 +45,6 @@ public class RespondStationPassengerLoad extends CyclicBehaviour {
                 reply.setContent("not-available passenger-load");
             }
             this.myAgent.send(reply);
-            System.out.println(new Ansi(Ansi.ITALIC, Ansi.GREEN).format("Station Agent "+this.myAgent.getAID().getName()) +
-                    ": Enviando mensagem ACLMessage.Propose to dock plataform " + ag.freePlataform);
         } else {
             this.block();
         }
