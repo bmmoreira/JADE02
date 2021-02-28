@@ -34,7 +34,7 @@ public class InitDock extends OneShotBehaviour {
         try {
             DFAgentDescription[] result = DFService.search(this.myAgent, template);
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
-                    ": Searching in Directory Facilitator Service"+
+                    ": Searching in Directory Facilitator Service "+
                     new Ansi(Ansi.BACKGROUND_YELLOW, Ansi.BLACK).format("Train Agent "+ className));
 
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +

@@ -44,6 +44,7 @@ public class StationAgent extends Agent {
                 int sNumber = Integer.valueOf((String) args[0]);
                 //cria uma station com duas plataformas para teste
                 station = new Station(sNumber, 2);
+                station.setStationName("Oriente");
                 // para teste vamos colocar a plataforma 1 livre(0)
                 station.setPlataformStatus(0, 1);
             }

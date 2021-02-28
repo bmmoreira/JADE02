@@ -128,8 +128,6 @@ public class RequestDock extends Behaviour {
                         this.myAgent.send(req);
                         this.mt = MessageTemplate.and(MessageTemplate.MatchConversationId("Request-Passenger-Load"), MessageTemplate.MatchInReplyTo(req.getReplyWith()));
 
-                        // informa ao Central Control Agent
-                        ag.addBehaviour(new metro.behaviors.train.InformCentralAgent(senderName));
                     } else {
                         System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format(agentType +
                                 myName) + "Attempt failed");

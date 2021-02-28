@@ -44,13 +44,16 @@ public class OfferDocking extends CyclicBehaviour {
 
             if (ag.freePlataform != 0) {
                 String trainID = msg.getContent();
+
                 reply.setPerformative(ACLMessage.PROPOSE);
-                // envie mensagem de resposta com status da plataforma
+
                 try {
-                    reply.setContentObject(new Train());
+                    // envia objeto Station para o Train com detalhes da Station
+                    reply.setContentObject(ag.station);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 reply.setContent(String.valueOf(ag.freePlataform));
                 printLog(": Sending ACLMessage.Propose to dock plataform " + ag.freePlataform);
             } else {
@@ -58,6 +61,7 @@ public class OfferDocking extends CyclicBehaviour {
                 reply.setContent("not-available plataforms");
                 printLog(": Sending ACLMessage.REFUSE, no available plataforms.");
             }
+            // envie mensagem de resposta com status da plataforma
             this.myAgent.send(reply);
 
         } else {

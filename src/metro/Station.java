@@ -109,7 +109,7 @@ public class Station implements Serializable {
         this.plataforms.get(index).setPlataformStatus(num);
     }
 
-    private class Plataform{
+    private class Plataform implements Serializable{
 
         private int plataformID;
         private AID dockedtrainID; // current train docked
