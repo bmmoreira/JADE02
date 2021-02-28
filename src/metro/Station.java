@@ -4,17 +4,9 @@ import jade.core.AID;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Station implements Serializable {
-
-    private String stationName;
-    private int stationNumber;
-    public ArrayList<Plataform> plataforms;
-    // in case both trains are at both plataforms Station is full
-    private boolean stationFull;
-    private int trainFrequency; // train interval in minutes
-    private int trainDefaultDockTime; // Default stop time for boarding passengers
-    private Train dockedTrain;
 
     public Station(int sNum, int pNum) {
 
@@ -25,6 +17,21 @@ public class Station implements Serializable {
             plataforms.add(new Plataform(i));
         }
 
+    }
+
+    private String stationName;
+    private int stationNumber;
+    public ArrayList<Plataform> plataforms;
+    // in case both trains are at both plataforms Station is full
+    private boolean stationFull;
+    private int trainFrequency; // train interval in minutes
+    private int trainDefaultDockTime; // Default stop time for boarding passengers
+    private Train dockedTrain;
+    private int numberOfPassengers = new Random().nextInt(300)+100;
+
+
+    public int getNumberOfPassengers(){
+        return numberOfPassengers;
     }
 
     public Train getDockedTrain() {
@@ -102,7 +109,7 @@ public class Station implements Serializable {
         this.plataforms.get(index).setPlataformStatus(num);
     }
 
-    private class Plataform implements Serializable{
+    private class Plataform{
 
         private int plataformID;
         private AID dockedtrainID; // current train docked

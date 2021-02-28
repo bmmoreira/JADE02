@@ -48,7 +48,7 @@ public class DockServer extends CyclicBehaviour {
 
 
             // chama metodo para calcular numero de passageiros atual na plataforma
-            reply.setContent("155");
+            //reply.setContent("155");
             // envia dados da Station
             try {
                 reply.setContentObject(new Train());

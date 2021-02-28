@@ -28,6 +28,8 @@ public class CentralControlAgent extends Agent{
     private AgentController t1 = null;
     private ArrayList<String> stationTrackList = new ArrayList<>();
     public boolean switchInform = false;
+    private int operationInterval = 3000; // Interval Central Control Agents checks for Message Events
+    public RailTrack track;
 
     protected void setup() {
         System.out.println(new Ansi(Ansi.ITALIC, Ansi.BLUE).format("Central Agent: ") +
@@ -39,10 +41,13 @@ public class CentralControlAgent extends Agent{
         this.createAgent("st2", "metro.StationAgent", new String[]{"2"});
         this.createAgent("st3", "metro.StationAgent", new String[]{"3"});
         this.createAgent("t1", "metro.TrainAgent", new String[]{"3"});
+
+
         // Adciona a ordem das Estacoes a ser usada pelos comboios
-        stationTrackList.add("st1"+"@metro.StationAgent");
-        stationTrackList.add("st2"+"@metro.StationAgent");
-        stationTrackList.add("st2"+"@metro.StationAgent");
+        track = new RailTrack();
+        track.addStation("st1@metro-system");
+        track.addStation("st2@metro-system");
+        track.addStation("st2@metro-system");
 
         /*
          *   Recebe mensagens de TrainAgents
@@ -50,7 +55,7 @@ public class CentralControlAgent extends Agent{
          */
         addBehaviour(new metro.behaviors.central.ReceiveReport(myGui));
 
-        addBehaviour(new metro.behaviors.central.OperateCentral(this,5000));
+        addBehaviour(new metro.behaviors.central.OperateCentral(this,operationInterval));
 
     }
     public void createAgent(String name,String className,Object[]args){

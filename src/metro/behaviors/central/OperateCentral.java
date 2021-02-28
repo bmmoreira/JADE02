@@ -25,10 +25,12 @@ public class OperateCentral extends TickerBehaviour {
 
         this.myName= myAgent.getAID().getName();
 
-        printLogHead(": Operational...");
+        //printLogHead(": Operational...");
 
+        // from Action on TASS GUI file
         if(ag.switchInform){
-            System.out.println("Testando...switch");
+            printLogHead(" Start button - Informing train to initiate");
+            // Send a inform to train to Move
             this.myAgent.addBehaviour(new metro.behaviors.central.InformAgent());
             ag.switchInform = false;
         }

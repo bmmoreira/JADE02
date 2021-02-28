@@ -28,7 +28,7 @@ public class TrackMove extends CyclicBehaviour {
         if(msg != null){
 
             msg.getPerformative();
-            printLogHead(": Received message -  Performative " +msg.getPerformative() + " from " + msg.getSender().getName());
+            printLogHead(": Received message -  Performative ACL " +msg.getPerformative() + " from " + msg.getSender().getName());
             this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent));
 
         } else {

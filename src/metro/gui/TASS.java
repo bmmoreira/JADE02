@@ -24,6 +24,8 @@ public class TASS extends JFrame implements ActionListener {
     private JButton startBtn;
     private JButton stopBtn;
     private String trainID;
+    private JLabel imagelabel;
+    private int trackState;
 
 
 
@@ -52,7 +54,7 @@ public class TASS extends JFrame implements ActionListener {
     private void createUIComponents() {
 
         startBtn = new JButton("Start");
-        stopBtn = new JButton("Stop");
+        stopBtn = new JButton("Next");
         startBtn.setPreferredSize(new Dimension(340, 30));
         stopBtn.setPreferredSize(new Dimension(340, 30));
         startBtn.addActionListener(this);
@@ -62,6 +64,14 @@ public class TASS extends JFrame implements ActionListener {
         mainPanel.add(startBtn, BorderLayout.LINE_START);
         mainPanel.add(stopBtn, BorderLayout.LINE_END);
 
+        //ImageIcon image = new ImageIcon("images/train2.png");
+        //imagelabel = new JLabel(image);
+        //imagelabel.setBounds(125, 290, 75, 75);
+        //imagelabel.repaint(25, 290, 75, 75);
+        //imgPanel.add(imagelabel);
+
+
+
 
     }
 
@@ -69,13 +79,28 @@ public class TASS extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         JButton src = (JButton) actionEvent.getSource();
         if(src.getActionCommand().equals("Start")){
-            System.out.println("Start pressed - Starting Simulation");
-            //imgPanel.ellipse.setFrame(315, 192, 50, 50);
-            imgPanel.repaint();
-            myAgent.switchInform = true;
-            //myAgent.createAgent("t1", "metro.TrainAgent", new String[]{"3"});
-        } else if(src.getActionCommand().equals("Stop")){
-            System.out.println("Stop pressed");
+            if(myAgent.track.isInitTrack()){
+                System.out.println("Track Simulation already started");
+            } else {
+                System.out.println("Start Button - Starting Simulation");
+                //imgPanel.ellipse.setFrame(315, 192, 50, 50);
+                imgPanel.repaint();
+                // inicia comportamento
+                myAgent.switchInform = true;
+                //myAgent.createAgent("t1", "metro.TrainAgent", new String[]{"3"});
+                // inicia Track Status
+                myAgent.track.setInitTrack(true);
+            }
+
+
+        } else if(src.getActionCommand().equals("Next")){
+            if(myAgent.track.isInitTrack()) {
+                System.out.println("Next pressed");
+                imgPanel.trainMove = true;
+                imgPanel.repaint();
+            } else {
+                System.out.println("Track has not been started");
+            }
         }
     }
 
@@ -91,6 +116,7 @@ public class TASS extends JFrame implements ActionListener {
 
         final private int teste =1;
         public boolean trainVisible = false;
+        public  boolean trainMove = false;
         BufferedImage img;
         BufferedImage trainIcon;
         final public Ellipse2D ellipse;
@@ -104,9 +130,6 @@ public class TASS extends JFrame implements ActionListener {
             setLayout(new GridBagLayout());
             ellipse = new Ellipse2D.Float(86, 195, 50, 50);
             ellipse2 = new Ellipse2D.Float(102, 347, 20, 20);
-            //add(new JButton("Test Button"));
-
-            //img = new ImageIcon("images/tass2.png");
 
             try {
                 img = ImageIO.read(new File("images/tass7.png")) ;
@@ -131,38 +154,51 @@ public class TASS extends JFrame implements ActionListener {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+
             g.drawImage(img, 0, 0, 685, 412, this);
 
-            //g.setColor(Color.RED);
-            //g.fillOval(45, 225, 50, 50);
-            doDrawing(g);
             if(trainVisible){
-                createTrainImage(g);
-
+                doDrawing(g);
             }
 
+
         }
 
-        private void doDrawing(Graphics g){
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(Color.GREEN);
-            g2d.fill(ellipse);
-            //g2d.fill(ellipse2);
-            g2d.dispose();
-        }
 
-        public void createTrainImage(Graphics g){
-            // g.setColor(Color.GREEN);
-            //g.fillRect(150, 150, 75 ,75);
+
+        public void doDrawing(Graphics g){
+
             Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(Color.GREEN);
-            g2d.fill(ellipse2);
-            g.drawImage(trainIcon, 25, 290, 75, 75, this);
+            Ellipse2D plataformElipse = null;
+            Ellipse2D stationElipse = null;
             g.setFont(new Font(
                     "SansSerif",
                     Font.BOLD,
                     12));
-            g.drawString(TASS.this.trainID,25,390);
+            switch(TASS.this.trackState){
+                case 0:
+                    g.drawImage(trainIcon, 25, 290, 75, 75, this);
+                    g.drawString(TASS.this.trainID,25,390);
+                    plataformElipse = new Ellipse2D.Float(102, 347, 20, 20);
+                    stationElipse = new Ellipse2D.Float(86, 195, 50, 50);
+                    TASS.this.trackState++;
+                break;
+                case 1:
+                    g.drawImage(trainIcon, 245, 290, 75, 75, this);
+                    g.drawString(TASS.this.trainID,225,390);
+                    plataformElipse = new Ellipse2D.Float(331, 347, 20, 20);
+                    stationElipse = new Ellipse2D.Float(315, 192, 50, 50);
+                    TASS.this.trackState++;
+                break;
+                case 2:
+                    g.drawImage(trainIcon, 475, 290, 75, 75, this);
+                    g.drawString(TASS.this.trainID,455,390);
+                    plataformElipse = new Ellipse2D.Float(553, 347, 20, 20);
+                    stationElipse = new Ellipse2D.Float(538, 192, 50, 50);
+            }
+            g2d.setColor(Color.GREEN);
+            g2d.fill(plataformElipse);
+            g2d.fill(stationElipse);
             g.dispose();
             g2d.dispose();
 

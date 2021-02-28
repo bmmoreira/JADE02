@@ -34,7 +34,7 @@ public class InformAgent extends OneShotBehaviour {
         msg.setConversationId("Track-Move");
         //msg.setReplyWith("cfp"+System.currentTimeMillis()); // Valor unico.
 
-        printLogHead(": Sending message -  Performative "+msg.getPerformative() + "to : t1@metro-system");
+        printLogHead(": Sending message -  ACL INFORM "+msg.getPerformative() + " to : t1@metro-system");
         // envia mensagem
         this.myAgent.send(msg);
 
