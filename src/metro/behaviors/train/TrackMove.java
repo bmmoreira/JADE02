@@ -5,17 +5,22 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 import metro.TrainAgent;
 import metro.extras.Ansi;
+
+import java.util.ArrayList;
 
 public class TrackMove extends CyclicBehaviour {
 
     private String  myName;
     private String className;
     private String agentType;
+    private ArrayList<String> stationTrackList = new ArrayList<>();
+    private TrainAgent ag;
 
-    public TrackMove(){
-
+    public TrackMove(TrainAgent agent){
+        this.ag = agent;
         this.className = getClass().getName();
         this.agentType = "Train Agent ";
     }
@@ -28,8 +33,14 @@ public class TrackMove extends CyclicBehaviour {
         if(msg != null){
 
             msg.getPerformative();
-            printLogHead(": Received message -  Performative ACL " +msg.getPerformative() + " from " + msg.getSender().getName());
-            this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent));
+            printLogHead(": Received message -  Performative ACL " + msg.getPerformative() + " from " + msg.getSender().getName());
+            try {
+                ag.stationTrackList = (ArrayList<String>) msg.getContentObject();
+
+            } catch (UnreadableException e) {
+                e.printStackTrace();
+            }
+            this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent,stationTrackList));
 
         } else {
             block();

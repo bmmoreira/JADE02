@@ -31,7 +31,7 @@ public class OperateCentral extends TickerBehaviour {
         if(ag.switchInform){
             printLogHead(" Start button - Informing train to initiate");
             // Send a inform to train to Move
-            this.myAgent.addBehaviour(new metro.behaviors.central.InformAgent());
+            this.myAgent.addBehaviour(new metro.behaviors.central.InformAgent("trackMove", ag.stationTrackList));
             ag.switchInform = false;
         }
 

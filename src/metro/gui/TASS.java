@@ -26,6 +26,7 @@ public class TASS extends JFrame implements ActionListener {
     private String trainID;
     private JLabel imagelabel;
     private int trackState;
+    private int limitTravel = 0;
 
 
 
@@ -88,19 +89,27 @@ public class TASS extends JFrame implements ActionListener {
                 // inicia comportamento
                 myAgent.switchInform = true;
                 //myAgent.createAgent("t1", "metro.TrainAgent", new String[]{"3"});
-                // inicia Track Status
+                // inicia Track Status permitindo comportando em OperateCentral
                 myAgent.track.setInitTrack(true);
+                limitTravel++;
             }
 
 
         } else if(src.getActionCommand().equals("Next")){
-            if(myAgent.track.isInitTrack()) {
-                System.out.println("Next pressed");
-                imgPanel.trainMove = true;
-                imgPanel.repaint();
+            if(limitTravel < 3){
+                if(myAgent.track.isInitTrack()) {
+                    System.out.println("Next pressed");
+                    //imgPanel.trainMove = true;
+                    // imgPanel.repaint();
+                    myAgent.switchInform = true;
+                    limitTravel++;
+                } else {
+                    System.out.println("Track has not been started");
+                }
             } else {
-                System.out.println("Track has not been started");
+                System.out.println("Simulation Ended");
             }
+
         }
     }
 
@@ -130,10 +139,11 @@ public class TASS extends JFrame implements ActionListener {
             setLayout(new GridBagLayout());
             ellipse = new Ellipse2D.Float(86, 195, 50, 50);
             ellipse2 = new Ellipse2D.Float(102, 347, 20, 20);
+            //getClass().getClassLoader().getResource("images/tass7.png")
 
             try {
-                img = ImageIO.read(new File("images/tass7.png")) ;
-                trainIcon = ImageIO.read(new File("images/train2.png")) ;
+                img = ImageIO.read(getClass().getClassLoader().getResource("images/tass7.png")) ;
+                trainIcon = ImageIO.read(getClass().getClassLoader().getResource("images/train2.png")) ;
             }
             catch (IOException ex) {
                 System.err.println("Caught IOException: " + ex.getMessage());

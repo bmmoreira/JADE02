@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="JADE02:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JADE02_jar</output-path>
+    <root id="archive" name="JADE02.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="JADE02" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../JADE-all-4.5.0/JADE-bin-4.5.0/jade/lib/jade.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../JADE-all-4.5.0/JADE-examples-4.5.0/jade/lib/jadeExamples.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/images" />
+    </root>
+  </artifact>
+</component>

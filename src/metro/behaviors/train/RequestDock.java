@@ -13,6 +13,8 @@ import metro.Train;
 import metro.TrainAgent;
 import metro.extras.Ansi;
 
+import java.util.ArrayList;
+
 /**
  *  Train dock Operations...
  *
@@ -27,10 +29,12 @@ public class RequestDock extends Behaviour {
     private String  myName;
     private String className;
     private String agentType;
+    private Station st = null;
+    private AID[] stationAgents;
 
     private MessageTemplate mt; // template para receber respostas(replies)
 
-    public RequestDock(TrainAgent agent) {
+    public RequestDock(TrainAgent agent, ArrayList<String> trackList) {
         this.ag = agent;
         this.currentStation = 0;
         this.step = 0;
@@ -50,11 +54,19 @@ public class RequestDock extends Behaviour {
                 // envia mensagem Station Agent pedindo plataformas livres
                 // Troca de Mensagens TrainAgent-StationAgent - Passo 1
                 ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
+                /*
                 for ( AID stationAgentAID : ag.stationAgents ) {
                     System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
                             ": Adding receiver " + stationAgentAID );
                     cfp.addReceiver(stationAgentAID);
                 }
+                */
+                stationAgents = new AID[ag.stationTrackList.size()];
+                for(int i =0;i<ag.stationTrackList.size();i++){
+                    stationAgents[i] = new AID(ag.stationTrackList.get(i));
+                }
+                cfp.addReceiver(stationAgents[ag.currentStation]);
+
 
                 cfp.setContent(String.valueOf(ag.getAID().getName()));
                 cfp.setConversationId("Docking-operation");
@@ -77,11 +89,20 @@ public class RequestDock extends Behaviour {
                     // resposta recebida
                     if(reply.getPerformative() == ACLMessage.PROPOSE){
                         // this is an offer
-                        dockingplataform = Integer.parseInt(reply.getContent());
+                        //dockingplataform = Integer.parseInt(reply.getContent());
                         gateAgent = reply.getSender();
                         String sName = reply.getSender().getName();
+                        try {
+                            Object content = reply.getContentObject();
+                            this.st = (Station)content;
 
-                        printLogHead( ": Passo 3 - Agent Station " + sName + " informa plataforma livre " + dockingplataform);
+                            printLogHead( ": Passo 3 - Agent Station " + sName + " informa plataforma livre " +
+                                    this.st.getFreePlataform());
+                        } catch (UnreadableException e) {
+                            e.printStackTrace();
+                            printLogHead( ": Passo 3 - Agent Station " + sName +
+                                    " not able to load Station Object from Train Agent ");
+                        }
 
                     }
 
@@ -117,7 +138,8 @@ public class RequestDock extends Behaviour {
                         //String plataformLoad = reply.getContent();
 
                         printLogHead(": Passo 6 - Successfully docked with agent " + senderName);
-                        printLog(": Successfully docked with agent " + senderName + " Opening train doors on plataform " + dockingplataform);
+                        printLog(": Successfully docked with agent " + senderName +
+                                " Opening train doors on plataform " + dockingplataform);
 
 
                         ACLMessage req = new ACLMessage(ACLMessage.REQUEST);
@@ -146,18 +168,13 @@ public class RequestDock extends Behaviour {
                     String senderName = reply.getSender().getName();
                     String plataformLoad = reply.getContent();
 
-                    System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Passo 7 - Train Agent "+
-                            myName) + ": Opening train doors at " +
-                            " passengers in platform " + plataformLoad);
+                    printLogHead(": Passo 7 - Opening train doors to " + plataformLoad +" passengers");
+                    printLog(": Ready to board passengers at " + new java.util.Date(System.currentTimeMillis()));
+                    printLog(": " + ag.train.getTrainDefaultDockTime() + " minutes to close train doors");
 
-                    System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                            myName) + ": Ready to board passengers at " +
-                            new java.util.Date(System.currentTimeMillis()));
-                    System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+
-                            myName) + ": " + ag.train.getTrainDefaultDockTime()+
-                            " minutes to close train doors");
                     // informa ao Central Control Agent
                     ag.addBehaviour(new metro.behaviors.train.InformCentralAgent(senderName));
+                    ag.currentStation++;
                     this.step = 5;
                     //ag.currentStation++;
                 } else {

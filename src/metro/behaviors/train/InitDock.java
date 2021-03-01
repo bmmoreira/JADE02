@@ -39,6 +39,9 @@ public class InitDock extends OneShotBehaviour {
 
             System.out.println(new Ansi(Ansi.ITALIC, Ansi.YELLOW).format("Train Agent "+ myName) +
                     ": Found the following station agents:");
+
+            System.out.println(result.length);
+
             ag.stationAgents = new AID[result.length];
             int stationCount = 0;
             for(int i = 0; i < result.length; ++i) {
@@ -56,10 +59,6 @@ public class InitDock extends OneShotBehaviour {
 
         //}
         //this.myAgent.addBehaviour(new metro.behaviors.train.RequestDock((TrainAgent) this.myAgent));
-
-
-
-
 
     }
 

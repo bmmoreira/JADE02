@@ -7,13 +7,19 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import metro.extras.Ansi;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class InformAgent extends OneShotBehaviour {
 
+    private ArrayList<String> stationTrackList = null;
+
     private String action;
-    public InformAgent(String ac){
+    public InformAgent(String ac, ArrayList<String> trackList){
         this.action = ac;
         this.className = getClass().getName();
         this.agentType = "Central Control Agent ";
+        this.stationTrackList = trackList;
     }
     private String className;
     private String agentType;
@@ -30,11 +36,15 @@ public class InformAgent extends OneShotBehaviour {
 
         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
         msg.addReceiver(new AID("t1@metro-system"));
-        msg.setContent(action);
+        try {
+            msg.setContentObject(stationTrackList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         msg.setConversationId("Track-Move");
         //msg.setReplyWith("cfp"+System.currentTimeMillis()); // Valor unico.
 
-        printLogHead(": Sending message -  ACL INFORM "+msg.getPerformative() + " to : t1@metro-system");
+        printLogHead(": Sending message to initiate docking protocol ACL INFORM "+msg.getPerformative() + " to : t1@metro-system");
         // envia mensagem
         this.myAgent.send(msg);
 

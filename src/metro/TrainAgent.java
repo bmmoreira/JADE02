@@ -14,6 +14,8 @@ import metro.behaviors.station.BroadcastTrainArrival;
 import metro.behaviors.train.RequestDock;
 import metro.extras.Ansi;
 
+import java.util.ArrayList;
+
 public class TrainAgent extends Agent {
 
     private int stations;
@@ -21,6 +23,7 @@ public class TrainAgent extends Agent {
     public AID[] stationAgents;
     public Train train;
     public int step = 0;
+    public ArrayList<String> stationTrackList = new ArrayList<>();
 
 
 
@@ -39,7 +42,7 @@ public class TrainAgent extends Agent {
          *  Aporta na primeira estacao e faz troca complexa
          *  de mensagens entre Agente de Comboio e Agente de Estacao
          */
-        addBehaviour(new metro.behaviors.train.InitDock(this));
+        //addBehaviour(new metro.behaviors.train.InitDock(this));
 
         /*
          *   Envia mensagem para Controle Central informando train docked
@@ -47,7 +50,7 @@ public class TrainAgent extends Agent {
          */
         //addBehaviour(new metro.behaviors.train.InformCentralAgent("trainDock"));
 
-        addBehaviour(new metro.behaviors.train.TrackMove());
+        addBehaviour(new metro.behaviors.train.TrackMove(this));
 
         // TODO: melhorar isto. Aguardar que os agentes existam em vez de usar Thread.sleep
         // Deveria estar no "StationAgent"?
