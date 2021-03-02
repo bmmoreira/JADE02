@@ -2,17 +2,8 @@ package metro;
 
 
 import jade.core.Agent;
-import jade.core.Profile;
-import jade.core.ProfileImpl;
-import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.SequentialBehaviour;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
-import metro.behaviors.central.CreateAgent;
-import metro.behaviors.central.OperateCentral;
 import metro.gui.TASS;
 import metro.extras.Ansi;
 
