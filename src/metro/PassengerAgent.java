@@ -13,7 +13,7 @@ public class PassengerAgent extends Agent {
     public Passenger passenger = new Passenger();
 
     protected void setup() {
-
+        /*
         // Informar a presença do passageiro
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
@@ -25,6 +25,19 @@ public class PassengerAgent extends Agent {
             DFService.register(this, dfd);
         }
         catch (FIPAException fe) {
+            fe.printStackTrace();
+        }
+        */
+        // Register station service in the yellow pages
+        DFAgentDescription dfd = new DFAgentDescription();
+        dfd.setName(getAID());
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("Board-train");
+        sd.setName("Jade-Docking-passenger");
+        dfd.addServices(sd);
+        try {
+            DFService.register(this, dfd);
+        } catch (FIPAException fe) {
             fe.printStackTrace();
         }
 

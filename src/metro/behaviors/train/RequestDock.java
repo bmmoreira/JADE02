@@ -4,6 +4,10 @@ package metro.behaviors.train;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -139,7 +143,7 @@ public class RequestDock extends Behaviour {
 
                         printLogHead(": Passo 6 - Successfully docked with agent " + senderName);
                         printLog(": Successfully docked with agent " + senderName +
-                                " Opening train doors on plataform " + dockingplataform);
+                                " Opening train doors on plataform " + st.getFreePlataform());
 
 
                         ACLMessage req = new ACLMessage(ACLMessage.REQUEST);
@@ -167,10 +171,17 @@ public class RequestDock extends Behaviour {
                 if (reply != null) {
                     String senderName = reply.getSender().getName();
                     String plataformLoad = reply.getContent();
+                    int doorTime = ag.train.getTrainDefaultDockTime();
+
+
 
                     printLogHead(": Passo 7 - Opening train doors to " + plataformLoad +" passengers");
                     printLog(": Ready to board passengers at " + new java.util.Date(System.currentTimeMillis()));
-                    printLog(": " + ag.train.getTrainDefaultDockTime() + " minutes to close train doors");
+                    if(Integer.valueOf(plataformLoad) > 50){
+                        doorTime++;
+                        printLog(": Passenger load is above 50. Increasing open door time");
+                    }
+                    printLog(": " + doorTime + " minutes to close train doors");
 
                     // informa ao Central Control Agent
                     ag.addBehaviour(new metro.behaviors.train.InformCentralAgent(senderName));
